@@ -107,7 +107,7 @@ def checkExists(islist):
 		if islist:
 			return True
 		else:
-			prompt = raw_input('Song with same name has already been downloaded. Re-download? (y/n/play): ')
+			prompt = input('Song with same name has already been downloaded. Re-download? (y/n/play): ')
 			if prompt == "y":
 				os.remove("Music/" + title + extension)
 				return False
