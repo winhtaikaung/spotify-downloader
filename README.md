@@ -23,7 +23,7 @@ That's how your Music library will look like!
 ### Debian, Ubuntu, Linux & Mac:
 ```
 cd
-git clone https://github.com/Ritiek/Spotify-Downloader
+git clone https://github.com/Ritiek/Spotify-Downloader -b python3
 cd Spotify-Downloader
 sudo pip install -U -r requirements.txt
 ```
