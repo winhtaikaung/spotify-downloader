@@ -215,6 +215,7 @@ def check_exists(music_file, raw_song, islist=True):
             # do not prompt and skip the current song
             # if already downloaded when using list
             if islist:
+                print('Song already exists')
                 return True
             # if downloading only single song, prompt to re-download
             else:
@@ -252,7 +253,7 @@ def grab_list(text_file):
             spotify = spotipy.Spotify(auth=new_token)
             grab_single(raw_song, number=number)
         # detect network problems
-        except (urllib.request.URLError, TypeError, IOError):
+        except (urllib2.URLError, TypeError, IOError):
             lines.append(raw_song)
             # remove the downloaded song from .txt
             misc.trim_song(text_file)
@@ -304,6 +305,7 @@ def grab_single(raw_song, number=None):
     content = go_pafy(raw_song)
     if content is None:
         return
+
     # print '[number]. [artist] - [song]' if downloading from list
     # otherwise print '[artist] - [song]'
     print(get_youtube_title(content, number))
