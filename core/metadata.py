@@ -1,8 +1,10 @@
+import urllib2
+
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3, APIC
 from mutagen.mp4 import MP4, MP4Cover
 
-import urllib.request
+
 
 
 def compare(music_file, metadata):
@@ -68,7 +70,7 @@ def embed_mp3(music_file, meta_tags):
         audiofile['isrc'] = meta_tags['external_ids']['isrc']
     audiofile.save(v2_version=3)
     audiofile = ID3(music_file)
-    albumart = urllib.request.urlopen(meta_tags['album']['images'][0]['url'])
+    albumart = urllib2.urlopen(meta_tags['album']['images'][0]['url'])
     audiofile["APIC"] = APIC(encoding=3, mime='image/jpeg', type=3,
                              desc=u'Cover', data=albumart.read())
     albumart.close()

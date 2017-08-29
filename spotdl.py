@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+import urllib2
 
 from core import metadata
 from core import convert
@@ -9,9 +10,9 @@ from titlecase import titlecase
 from slugify import slugify
 import spotipy
 import pafy
-import urllib.request
 import sys
 import os
+
 
 def generate_songname(tags):
     """Generate a string of the format '[artist] - [song]' for the given spotify song."""
@@ -63,7 +64,7 @@ def generate_youtube_url(raw_song):
         song = generate_songname(meta_tags)
         search_url = misc.generate_search_url(song, viewsort=True)
 
-    item = urllib.request.urlopen(search_url).read()
+    item = urllib2.urlopen(search_url).read()
     # item = unicode(item, 'utf-8')
     items_parse = BeautifulSoup(item, "html.parser")
 
@@ -78,7 +79,7 @@ def generate_youtube_url(raw_song):
                 videotime = x.find('span', class_="video-time").get_text()
             except AttributeError:
                 return generate_youtube_url(raw_song)
-            youtubedetails = {'link': link, 'title': title, 'videotime': videotime, 'seconds':misc.get_sec(videotime)}
+            youtubedetails = {'link': link, 'title': title, 'videotime': videotime, 'seconds': misc.get_sec(videotime)}
             videos.append(youtubedetails)
             if meta_tags is None:
                 break
@@ -92,7 +93,7 @@ def generate_youtube_url(raw_song):
         print('0. Skip downloading this song')
         # fetch all video links on first page on YouTube
         for i, v in enumerate(videos):
-          print(u'{0}. {1} {2} {3}'.format(i+1, v['title'], v['videotime'], "http://youtube.com"+v['link']))
+            print(u'{0}. {1} {2} {3}'.format(i + 1, v['title'], v['videotime'], "http://youtube.com" + v['link']))
         print('')
         # let user select the song to download
         result = misc.input_link(videos)
@@ -100,7 +101,7 @@ def generate_youtube_url(raw_song):
             return None
     else:
         if meta_tags is not None:
-            videos.sort(key=lambda x: abs(x['seconds'] - (int(meta_tags['duration_ms'])/1000)))
+            videos.sort(key=lambda x: abs(x['seconds'] - (int(meta_tags['duration_ms']) / 1000)))
         result = videos[0];
 
     full_link = u'youtube.com{0}'.format(result['link'])
@@ -336,6 +337,7 @@ class TestArgs(object):
     input_ext = '.m4a'
     output_ext = '.mp3'
     folder = 'Music/'
+
 
 # token is mandatory when using Spotify's API
 # https://developer.spotify.com/news-stories/2017/01/27/removing-unauthenticated-calls-to-the-web-api/

@@ -1,8 +1,9 @@
 import sys
 import os
 import argparse
+from urllib import quote
+
 import spotipy.oauth2 as oauth2
-from urllib.request import quote
 from slugify import slugify
 
 
